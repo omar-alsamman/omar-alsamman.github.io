@@ -1,0 +1,654 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Omar Alsamman — Portfolio</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --paper: #F1F3F1;
+    --paper-2: #E7EAE6;
+    --ink: #12181A;
+    --ink-soft: #46524E;
+    --line: #C3CBC4;
+    --accent: #E85B26;      /* utility / warning orange — cutouts, arresters, safety signage */
+    --accent-ink: #7A2D0C;
+    --circuit: #2C6E5C;     /* copper-patina green — AI/hardware/circuit thread */
+    --circuit-ink: #16352C;
+    --card: #FBFBF9;
+    --shadow: 0 1px 0 rgba(18,24,26,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #14181A;
+      --paper-2: #1B2022;
+      --ink: #ECEEEA;
+      --ink-soft: #A9B3AD;
+      --line: #333B3B;
+      --accent: #FF8148;
+      --accent-ink: #FFD9C2;
+      --circuit: #57B79B;
+      --circuit-ink: #C6EBDF;
+      --card: #191F20;
+      --shadow: 0 1px 0 rgba(0,0,0,0.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #14181A;
+    --paper-2: #1B2022;
+    --ink: #ECEEEA;
+    --ink-soft: #A9B3AD;
+    --line: #333B3B;
+    --accent: #FF8148;
+    --accent-ink: #FFD9C2;
+    --circuit: #57B79B;
+    --circuit-ink: #C6EBDF;
+    --card: #191F20;
+    --shadow: 0 1px 0 rgba(0,0,0,0.4);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.55;
+  }
+  ::selection{ background:var(--accent); color:#fff; }
+
+  .wrap{ max-width:920px; margin:0 auto; padding:0 24px; }
+
+  h1,h2,h3{ font-family:'Big Shoulders Display', system-ui, sans-serif; text-transform:uppercase; text-wrap:balance; letter-spacing:0.01em; margin:0; }
+  .mono{ font-family:'IBM Plex Mono', ui-monospace, monospace; }
+  .eyebrow{ font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-soft); }
+
+  a{ color:var(--circuit); text-decoration-color: color-mix(in srgb, var(--circuit) 40%, transparent); text-underline-offset:3px; }
+  a:hover{ color:var(--accent); }
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+
+  /* ---------- Title block header ---------- */
+  header.titleblock{
+    border-bottom:2px solid var(--ink);
+    padding:20px 0 0;
+  }
+  .tb-top{ display:flex; justify-content:space-between; align-items:baseline; gap:16px; flex-wrap:wrap; padding-bottom:14px; }
+  nav{ display:flex; gap:18px; flex-wrap:wrap; }
+  nav a{ font-family:'IBM Plex Mono', monospace; font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-soft); text-decoration:none; }
+  nav a:hover{ color:var(--accent); }
+
+  .hero{ padding:46px 0 28px; }
+  .hero h1{ font-size:clamp(2.6rem, 9vw, 5.2rem); font-weight:800; line-height:0.92; }
+  .hero .role{ font-size:clamp(1rem,2.6vw,1.3rem); color:var(--ink-soft); margin-top:10px; max-width:44ch; }
+
+  .tb-strip{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    border-top:1px solid var(--ink);
+    border-bottom:1px solid var(--ink);
+    margin-top:26px;
+  }
+  .tb-cell{ padding:10px 16px; border-left:1px solid var(--line); }
+  .tb-cell:first-child{ border-left:none; }
+  .tb-cell .k{ font-family:'IBM Plex Mono',monospace; font-size:0.62rem; letter-spacing:0.1em; color:var(--ink-soft); text-transform:uppercase; }
+  .tb-cell .v{ font-family:'IBM Plex Mono',monospace; font-size:0.86rem; margin-top:3px; font-variant-numeric:tabular-nums; }
+  @media (max-width:640px){ .tb-strip{ grid-template-columns:repeat(2,1fr); } .tb-cell:nth-child(3){ border-left:none; } }
+
+  /* ---------- Sheet sections ---------- */
+  section.sheet{ padding:56px 0; border-bottom:1px solid var(--line); }
+  section.sheet:last-of-type{ border-bottom:none; }
+  .sheet-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:26px; }
+  .sheet-num{ font-family:'IBM Plex Mono',monospace; font-size:0.82rem; color:var(--accent); font-weight:600; }
+  .sheet-head h2{ font-size:clamp(1.6rem,4vw,2.3rem); font-weight:700; }
+
+  .lede{ max-width:66ch; color:var(--ink-soft); font-size:1.02rem; }
+
+  /* ---------- About ---------- */
+  .about-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:40px; }
+  @media (max-width:700px){ .about-grid{ grid-template-columns:1fr; } }
+  .stat{ padding:14px 0; border-top:1px solid var(--line); }
+  .stat:first-child{ border-top:none; }
+  .stat .num{ font-family:'IBM Plex Mono',monospace; font-size:1.5rem; color:var(--circuit); font-variant-numeric:tabular-nums; }
+  .stat .lbl{ font-size:0.82rem; color:var(--ink-soft); }
+
+  /* ---------- Experience ---------- */
+  .job{ display:grid; grid-template-columns:170px 1fr; gap:22px; padding:22px 0; border-top:1px solid var(--line); }
+  .job:first-child{ border-top:none; }
+  @media (max-width:640px){ .job{ grid-template-columns:1fr; gap:6px; } }
+  .job .when{ font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-soft); padding-top:3px; }
+  .job h3{ font-size:1.18rem; font-weight:700; text-transform:none; letter-spacing:0; }
+  .job .org{ font-family:'IBM Plex Mono',monospace; font-size:0.82rem; color:var(--circuit-ink); background:color-mix(in srgb, var(--circuit) 14%, transparent); padding:2px 8px; border-radius:3px; display:inline-block; margin:6px 0 10px; }
+  .job ul{ margin:0; padding-left:1.1em; color:var(--ink-soft); font-size:0.95rem; }
+  .job li{ margin-bottom:5px; }
+
+  /* ---------- Featured project ---------- */
+  .feature{ background:var(--card); border:1px solid var(--line); box-shadow:var(--shadow); }
+  .feature-top{ padding:30px 30px 0; }
+  .feature-top .eyebrow{ color:var(--accent); }
+  .feature-top h3{ font-size:clamp(1.5rem,3.6vw,2rem); font-weight:700; margin-top:6px; }
+  .feature-top p{ color:var(--ink-soft); max-width:64ch; margin-top:10px; }
+
+  .diagram{ padding:18px 30px 6px; }
+  .diagram svg{ width:100%; height:auto; display:block; }
+
+  .results{ display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-top:20px; }
+  @media (max-width:640px){ .results{ grid-template-columns:repeat(2,1fr); } }
+  .result{ padding:18px 16px; border-left:1px solid var(--line); }
+  .result:first-child, .result:nth-child(3){ border-left:none; }
+  @media (min-width:641px){ .result:nth-child(3){ border-left:1px solid var(--line);} }
+  .result .rv{ font-family:'IBM Plex Mono',monospace; font-size:1.3rem; font-variant-numeric:tabular-nums; }
+  .result .rl{ font-size:0.72rem; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.05em; margin-top:2px; }
+  .pass{ color:var(--circuit); }
+
+  .decision{ margin:24px 30px; padding:16px 18px; border-left:3px solid var(--accent); background:color-mix(in srgb, var(--accent) 8%, transparent); }
+  .decision .eyebrow{ color:var(--accent-ink); }
+  .decision p{ margin:6px 0 0; font-size:0.94rem; }
+
+  .bom{ padding:22px 30px 30px; }
+  .bom h4{ font-family:'IBM Plex Mono',monospace; font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:10px; font-weight:500;}
+  .bom-list{ columns:2; column-gap:28px; font-size:0.88rem; color:var(--ink-soft); }
+  @media (max-width:600px){ .bom-list{ columns:1; } }
+  .bom-list div{ break-inside:avoid; padding:4px 0; border-bottom:1px dotted var(--line); }
+
+  .links-row{ display:flex; gap:18px; flex-wrap:wrap; padding:18px 30px 26px; font-family:'IBM Plex Mono',monospace; font-size:0.82rem; border-top:1px solid var(--line); }
+
+  /* ---------- Try It ---------- */
+  .tryit textarea{ width:100%; box-sizing:border-box; background:var(--card); color:var(--ink); border:1px solid var(--line); border-radius:4px; padding:14px; font-family:'IBM Plex Mono',monospace; font-size:0.85rem; line-height:1.6; resize:vertical; }
+  .tryit textarea:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .tryit-actions{ display:flex; gap:12px; margin-top:14px; flex-wrap:wrap; }
+  .tryit-actions button{ font-family:'IBM Plex Mono',monospace; font-size:0.78rem; letter-spacing:0.05em; text-transform:uppercase; padding:11px 20px; border-radius:3px; border:1px solid var(--line); background:var(--card); color:var(--ink); cursor:pointer; }
+  .tryit-actions button:hover{ border-color:var(--accent); color:var(--accent-ink); }
+  .tryit-actions button.primary{ background:var(--circuit); color:#fff; border-color:var(--circuit); }
+  .tryit-actions button.primary:hover{ background:var(--accent); border-color:var(--accent); color:#fff; }
+  .tryit-note{ font-size:0.78rem; color:var(--ink-soft); margin-top:10px; }
+  #tryit-output{ margin-top:24px; }
+  .tr-summary{ font-family:'IBM Plex Mono',monospace; font-size:0.95rem; padding:14px 16px; border-radius:4px; margin-bottom:16px; border:1px solid; }
+  .tr-summary.pass{ background:color-mix(in srgb, var(--circuit) 14%, transparent); color:var(--circuit-ink); border-color:var(--circuit); }
+  .tr-summary.fail{ background:color-mix(in srgb, var(--accent) 12%, transparent); color:var(--accent-ink); border-color:var(--accent); }
+  .tr-check{ display:flex; justify-content:space-between; align-items:baseline; gap:14px; padding:11px 0; border-top:1px dotted var(--line); font-size:0.9rem; }
+  .tr-check:first-child{ border-top:none; }
+  .tr-check .tr-id{ font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--ink-soft); min-width:92px; }
+  .tr-check .tr-detail{ flex:1; color:var(--ink-soft); font-size:0.86rem; }
+  .tr-check .tr-status{ font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:0.78rem; white-space:nowrap; }
+  .tr-check .tr-status.pass{ color:var(--circuit); }
+  .tr-check .tr-status.fail{ color:var(--accent); }
+  .tr-error{ color:var(--accent-ink); font-size:0.9rem; background:color-mix(in srgb, var(--accent) 10%, transparent); border:1px solid var(--accent); border-radius:4px; padding:14px 16px; }
+
+  /* ---------- Other projects ---------- */
+  .proj-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+  .proj-grid > .proj:last-child:nth-child(odd){ grid-column:1 / -1; }
+  @media (max-width:640px){ .proj-grid{ grid-template-columns:1fr; } }
+  .proj{ background:var(--card); padding:22px; display:flex; flex-direction:column; gap:8px; min-height:150px; }
+  .proj h3{ font-size:1.05rem; font-weight:700; text-transform:none; letter-spacing:0; }
+  .proj .when{ font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--ink-soft); }
+  .proj p{ font-size:0.88rem; color:var(--ink-soft); margin:0; flex-grow:1; }
+  .tag{ align-self:flex-start; font-family:'IBM Plex Mono',monospace; font-size:0.66rem; letter-spacing:0.06em; text-transform:uppercase; padding:3px 8px; border:1px dashed var(--line); color:var(--ink-soft); }
+  .tag.needinfo{ border-color:var(--accent); color:var(--accent-ink); }
+  .tag.built{ border-color:var(--circuit); color:var(--circuit-ink); border-style:solid; }
+  .proj-link{ font-family:'IBM Plex Mono',monospace; font-size:0.78rem; text-decoration:none; }
+
+  /* ---------- Skills ---------- */
+  .skill-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+  @media (max-width:700px){ .skill-grid{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:460px){ .skill-grid{ grid-template-columns:1fr; } }
+  .skill-col h4{ font-family:'IBM Plex Mono',monospace; font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent-ink); margin-bottom:10px; font-weight:500; }
+  .skill-col ul{ list-style:none; margin:0; padding:0; font-size:0.9rem; color:var(--ink-soft); }
+  .skill-col li{ padding:5px 0; border-top:1px dotted var(--line); }
+  .skill-col li:first-child{ border-top:none; }
+
+  /* ---------- Contact / footer ---------- */
+  footer{ padding:44px 0 60px; }
+  .contact-row{ display:flex; gap:26px; flex-wrap:wrap; font-family:'IBM Plex Mono',monospace; font-size:0.92rem; }
+  .contact-row a{ text-decoration:none; }
+  .fine{ margin-top:30px; font-size:0.76rem; color:var(--ink-soft); }
+</style>
+
+<header class="titleblock">
+  <div class="wrap">
+    <div class="tb-top">
+      <span class="eyebrow">Engineering Portfolio · Rev A · 2026</span>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#work">Featured Work</a>
+        <a href="#tryit">Try It</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <h1>Omar<br>Alsamman</h1>
+      <p class="role">Electrical &amp; Computer Engineer bridging utility power distribution and AI systems evaluation — building toward AI Systems Engineering at the hardware edge.</p>
+    </div>
+    <div class="tb-strip">
+      <div class="tb-cell"><div class="k">Based</div><div class="v">San Antonio, TX</div></div>
+      <div class="tb-cell"><div class="k">Status</div><div class="v">Remote · traveling internationally</div></div>
+      <div class="tb-cell"><div class="k">Degree</div><div class="v">B.S. EE + B.S. CpE, UTSA '25</div></div>
+      <div class="tb-cell"><div class="k">Focus</div><div class="v">Power · AI Eval · Hardware</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="sheet" id="about">
+    <div class="sheet-head"><span class="sheet-num">01</span><h2>About</h2></div>
+    <div class="about-grid">
+      <p class="lede">
+        I design and verify electrical systems the way a utility engineer does — against a standard, with a calculation to back every claim — and now apply that same rigor to evaluating AI outputs: catching the fabricated spec, the calculation that doesn't reconcile, the claim a general reviewer would wave through. My path started in overhead distribution design for CenterPoint Energy and Oncor, moved into hardware fault investigation in a university robotics lab, and is now headed toward AI Systems Engineering — work at the intersection of embedded hardware, FPGA, and applied AI, where a genuine electrical engineering background is the edge, not the gap.
+      </p>
+      <div>
+        <div class="stat"><div class="num">3.60</div><div class="lbl">GPA — B.S. Electrical + B.S. Computer Engineering, UTSA</div></div>
+        <div class="stat"><div class="num">40+</div><div class="lbl">Concurrent utility deliverables managed at Leidos</div></div>
+        <div class="stat"><div class="num">3rd</div><div class="lbl">Place, Ground Penetrating Radar senior design</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sheet" id="experience">
+    <div class="sheet-head"><span class="sheet-num">02</span><h2>Experience</h2></div>
+
+    <div class="job">
+      <div class="when">Jun 2026 — Present</div>
+      <div>
+        <h3>AI Response Evaluator</h3>
+        <span class="org">Handshake AI Fellowship · Project Hedgehog</span>
+        <ul>
+          <li>Rate AI-generated responses against structured task rubrics for instruction-following, factual accuracy, and completeness.</li>
+          <li>Reconcile AI-generated financial and engineering calculations against source spreadsheets; flag rounding errors and omitted scenarios.</li>
+          <li>Verify equipment models and technical specifications against source documentation — applying an EE background to catch physically implausible claims other evaluators miss.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="job">
+      <div class="when">Mar 2026 — Jun 2026</div>
+      <div>
+        <h3>Associate Power Distribution Engineer</h3>
+        <span class="org">Leidos · CenterPoint Energy &amp; Oncor Electric Delivery (contract ended — company-wide RIF)</span>
+        <ul>
+          <li>Managed 40+ concurrent overhead/underground distribution deliverables for two utility clients across AEGIS, DDS, Maximo, and Bluebeam Revu.</li>
+          <li>Performed pole loading, conductor sag-and-tension, and voltage-drop calculations; resolved field/utility conflicts via site surveys.</li>
+          <li>Reviewed drawings and as-built records for NESC compliance.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="job">
+      <div class="when">May 2024 — May 2025</div>
+      <div>
+        <h3>Research Assistant, Robotics &amp; AI Systems</h3>
+        <span class="org">UTSA Robotics &amp; AI Systems Lab</span>
+        <ul>
+          <li>Investigated sensor noise, signal integrity, and grounding faults on prototype boards; tested hardware changes and validated results.</li>
+          <li>Documented root-cause findings and test procedures for repeatable validation.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sheet" id="work">
+    <div class="sheet-head"><span class="sheet-num">03</span><h2>Featured Work</h2></div>
+
+    <div class="feature">
+      <div class="feature-top">
+        <div class="eyebrow">Independent Portfolio Project · Completed Jun 2025</div>
+        <h3>12.47&nbsp;kV Residential Distribution Pole Design</h3>
+        <p>Designed and analyzed a utility-style overhead distribution structure end-to-end: structural loading, guying analysis, grounding design, and NESC Grade&nbsp;C construction documentation for a 35-ft Class&nbsp;5 wood pole in a double dead-end configuration.</p>
+      </div>
+
+      <div class="diagram" aria-hidden="true">
+        <svg viewBox="0 0 760 260" role="img" aria-label="Line diagram of the distribution pole: 35-foot wood pole with double dead-end crossarm, guy wire to helical anchor, transformer, and two bonded ground rods.">
+          <defs>
+            <style>
+              .ln{ stroke: var(--ink-soft); stroke-width:1.4; fill:none; }
+              .lbl{ font-family:'IBM Plex Mono',monospace; font-size:10px; fill: var(--ink-soft); }
+              .em{ stroke: var(--ink); stroke-width:2; }
+              .acc{ stroke: var(--accent); }
+              .grn{ stroke: var(--circuit); }
+            </style>
+          </defs>
+          <!-- ground line -->
+          <line x1="20" y1="210" x2="740" y2="210" class="ln em"/>
+          <text x="24" y="225" class="lbl">GROUND LINE</text>
+
+          <!-- pole -->
+          <line x1="330" y1="20" x2="330" y2="210" class="ln em"/>
+          <text x="336" y="32" class="lbl">35-FT CLASS 5 WOOD POLE</text>
+
+          <!-- crossarm -->
+          <line x1="250" y1="48" x2="410" y2="48" class="ln em"/>
+          <circle cx="270" cy="48" r="4" class="ln"/>
+          <circle cx="330" cy="48" r="4" class="ln"/>
+          <circle cx="390" cy="48" r="4" class="ln"/>
+          <text x="416" y="52" class="lbl">DOUBLE DEAD-END CROSSARM</text>
+
+          <!-- conductors -->
+          <path d="M270 48 C 230 60, 150 70, 60 78" class="ln acc"/>
+          <path d="M330 48 C 300 60, 200 70, 60 92" class="ln acc"/>
+          <path d="M390 48 C 350 60, 250 70, 60 106" class="ln acc"/>
+          <text x="30" y="70" class="lbl">PHASE A/B/C</text>
+
+          <!-- guy wire + anchor -->
+          <line x1="330" y1="70" x2="480" y2="205" class="ln"/>
+          <line x1="465" y1="205" x2="500" y2="215" class="ln em"/>
+          <text x="484" y="200" class="lbl">7/16" EHS GUY WIRE</text>
+          <text x="470" y="232" class="lbl">HELICAL ANCHOR — 4,000 LB</text>
+
+          <!-- transformer -->
+          <rect x="345" y="120" width="34" height="48" rx="3" class="ln em"/>
+          <text x="384" y="148" class="lbl">25 kVA XFMR</text>
+
+          <!-- ground rods -->
+          <line x1="330" y1="210" x2="330" y2="245" class="ln grn"/>
+          <line x1="330" y1="245" x2="360" y2="245" class="ln grn"/>
+          <line x1="360" y1="230" x2="360" y2="245" class="ln grn"/>
+          <text x="336" y="256" class="lbl">(2) 5/8" × 8' CU-CLAD GROUND RODS</text>
+        </svg>
+      </div>
+
+      <div class="results">
+        <div class="result"><div class="rv">1,091 lb</div><div class="rl">Total wind load</div></div>
+        <div class="result"><div class="rv">38,588 ft-lb</div><div class="rl">Groundline moment</div></div>
+        <div class="result"><div class="rv">85.8%</div><div class="rl">Pole capacity utilization</div></div>
+        <div class="result"><div class="rv pass">21 Ω · PASS</div><div class="rl">Final ground resistance</div></div>
+      </div>
+
+      <div class="decision">
+        <div class="eyebrow">Engineering Decision</div>
+        <p>Initial single-rod grounding calculated at 42&nbsp;Ω, exceeding the 25&nbsp;Ω project requirement. Rather than switch to lower-resistivity backfill, I specified two bonded 5/8"×8' copper-clad rods spaced 16&nbsp;ft apart — bringing resistance to 21&nbsp;Ω while keeping the design on standard utility hardware.</p>
+      </div>
+
+      <div class="bom">
+        <h4>Major Bill of Materials</h4>
+        <div class="bom-list">
+          <div>35-ft Class 5 wood pole</div>
+          <div>25 kVA pole-mounted transformer</div>
+          <div>Double dead-end crossarm assembly</div>
+          <div>Dead-end insulator assembly ×3</div>
+          <div>Pin insulators ×3</div>
+          <div>Fused cutout assembly</div>
+          <div>Surge arresters ×3</div>
+          <div>7/16" EHS guy wire &amp; hardware</div>
+          <div>5/8" helical anchor, 4,000-lb capacity</div>
+          <div>#6 AWG copper grounding conductor</div>
+          <div>(2) 5/8"×8' copper-clad ground rods</div>
+        </div>
+      </div>
+
+      <div class="links-row">
+        <a href="https://drive.google.com/file/d/1UbCusSvVxF3nWbjKZy5suWxR1xAtEST5/view" target="_blank" rel="noopener">Engineering Report ↗</a>
+        <a href="https://docs.google.com/spreadsheets/d/1JwseS_OjcheVTEZBMqBmTbCsjgA6N7KT/edit" target="_blank" rel="noopener">Calculations (xlsx) ↗</a>
+        <a href="https://drive.google.com/file/d/1i1LEAJnK0YEVZuCmmn-JoIxy_JtUj_IO/view" target="_blank" rel="noopener">Elevation Drawing E-103 ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sheet" id="tryit">
+    <div class="sheet-head"><span class="sheet-num">04</span><h2>Try It — NESC Compliance Checker</h2></div>
+    <p class="lede" style="margin-bottom:20px;">
+      This runs the same rule engine that's live on <a href="https://github.com/omar-alsamman/nesc-compliance-agent" target="_blank" rel="noopener">GitHub</a> — right here in your browser, no server, no account, no API key. Paste a plain-text pole design summary below (or load my own reference project) and check it against NESC grounding, structural capacity, and anchor rules.
+    </p>
+    <div class="tryit">
+      <textarea id="tryit-input" rows="11" spellcheck="false" aria-label="Paste a plain-text pole design calculation summary">Pole Class:
+Pole Height: ft
+NESC Grade:
+Total Wind Load: lb
+Groundline Moment: ft-lb
+Pole Capacity Utilization: %
+Guy Wire Tension: lb
+Required Anchor Capacity: lb
+Selected Anchor Capacity: lb
+Final Ground Resistance: ohm</textarea>
+      <div class="tryit-actions">
+        <button type="button" id="tryit-sample">Load Sample Project</button>
+        <button type="button" id="tryit-check" class="primary">Check Compliance</button>
+      </div>
+      <p class="tryit-note">Handles both labeled lines and full sentences ("the wind load came out to 1091 lb" works, not just "Total Wind Load: 1091 lb"). First 6 fields are required; the last 4 (guying/anchor) are optional — leave them blank if your project doesn't have them.</p>
+      <div id="tryit-output" hidden></div>
+    </div>
+  </section>
+
+  <section class="sheet" id="projects">
+    <div class="sheet-head"><span class="sheet-num">05</span><h2>Additional Projects</h2></div>
+    <div class="proj-grid">
+      <div class="proj">
+        <span class="when">Completed Jun 2025</span>
+        <h3>12.47 kV Residential Overhead Distribution Pole Design</h3>
+        <p>Full utility-style engineering calculation workbook: pole structural loading, conductor sag-and-tension, guying analysis, and grounding design, run as an Inputs → Load → Moment → Guy → Grounding → Pass/Fail pipeline and verified against NESC Grade C construction requirements. See the full write-up in Featured Work above.</p>
+        <span class="tag built">Completed</span>
+        <a class="proj-link" href="#work">Featured Work ↑</a>
+      </div>
+      <div class="proj">
+        <span class="when">Sep 2026 — In progress</span>
+        <h3>NESC Compliance &amp; Calculation Verification Agent</h3>
+        <p>Deterministic Python/Pydantic rule engine that checks distribution pole design calculations against NESC grounding, guying, and loading rules — validated against my own real pole design project as ground truth, with automated pytest regression tests, all passing. Includes a free, regex-based extraction layer that turns a plain-text calc summary — labeled or full-sentence — into structured input with no API key required.</p>
+        <span class="tag built">Tested &amp; passing</span>
+        <a class="proj-link" href="https://github.com/omar-alsamman/nesc-compliance-agent" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+      <div class="proj">
+        <span class="when">Aug 2024 — May 2025</span>
+        <h3>Ground Penetrating Radar — Senior Design</h3>
+        <p>Five-person team project building a portable subsurface-imaging system (Jetson Nano, custom PCBs, SPI-driven signal path). My role: built the touchscreen field interface in Kivy, designed and configured the circuit boards (KiCad) and their connectivity, and used AI-assisted debugging to help get the system to a finished, working state. Finished 3rd place.</p>
+      </div>
+      <div class="proj">
+        <span class="when">Jan 2023 — Aug 2024</span>
+        <h3>Driver Behavior Control System</h3>
+        <p>Research project in Dr. Yufang Jin's UTSA lab (Professor, Electrical &amp; Computer Engineering), built on a CARLA simulation framework and existing libraries provided by graduate research mentors. My role spanned evaluation methodology, control logic, and hardware wiring/prototype-board integration as our team extended that baseline into a more thorough evaluation and a more robust driver-behavior control system.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sheet" id="skills">
+    <div class="sheet-head"><span class="sheet-num">06</span><h2>Skills</h2></div>
+    <div class="skill-grid">
+      <div class="skill-col">
+        <h4>Distribution Engineering</h4>
+        <ul>
+          <li>Pole loading &amp; guying analysis</li>
+          <li>Conductor wind loading</li>
+          <li>Grounding design</li>
+          <li>NESC / NEC / IEEE standards</li>
+          <li>Overhead &amp; underground design</li>
+        </ul>
+      </div>
+      <div class="skill-col">
+        <h4>AI Evaluation &amp; QA</h4>
+        <ul>
+          <li>Rubric-based rating</li>
+          <li>A/B preference ranking</li>
+          <li>Calculation &amp; spec verification</li>
+          <li>Multimodal review (doc/image/code)</li>
+          <li>Evidence-based feedback</li>
+        </ul>
+      </div>
+      <div class="skill-col">
+        <h4>Tools &amp; Technical</h4>
+        <ul>
+          <li>AutoCAD, MATLAB, Verilog</li>
+          <li>FPGA development (Vivado)</li>
+          <li>PSpice / OrCAD, embedded systems</li>
+          <li>Excel (advanced), Bluebeam, Jira</li>
+          <li>Python (building), Git/GitHub, pytest</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="sheet-head"><span class="sheet-num">07</span><h2>Contact</h2></div>
+    <div class="contact-row">
+      <a href="mailto:omar.alsamman003@gmail.com">omar.alsamman003@gmail.com</a>
+      <a href="tel:+17638434572">(763) 843-4572</a>
+      <a href="https://linkedin.com/in/omar-alsamman-i4023" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+    <p class="fine">San Antonio, TX · Currently remote / traveling internationally</p>
+  </footer>
+
+</main>
+
+<script>
+(function(){
+  // Ported 1:1 from nesc_verifier/text_parser.py and nesc_verifier/rules.py
+  // in github.com/omar-alsamman/nesc-compliance-agent -- same logic, running
+  // client-side so it works with no server and no API key.
+
+  // Short run of connective words/punctuation allowed between a label phrase
+  // and its value, so "wind load came out to 1091 lb" matches as readily as
+  // "wind load: 1091 lb". Bounded to avoid jumping to an unrelated number.
+  var GAP = "(?:[a-zA-Z,:=\\s]{0,30})?";
+  var LB = "(?:lb|lbs|pounds)";
+  var FT = "(?:ft|feet|foot|')";
+  var FTLB = "(?:ft[\\s-]?lb|foot[\\s-]?pounds?)";
+  var OHM = "(?:ohm|ohms|Ω)";
+
+  var FIELD_PATTERNS = {
+    pole_class: [
+      new RegExp("pole\\s*class\\s*[:=]?\\s*(class\\s*\\d+)", "i"),
+      new RegExp("\\b(class\\s*\\d+)\\b\\s*(?:wood\\s*)?pole", "i"),
+      new RegExp("(class\\s*\\d+)\\s*(?:wood\\s*)?pole", "i"),
+      new RegExp("pole\\s*is\\s*(?:a\\s*)?(class\\s*\\d+)", "i"),
+      new RegExp("\\b(class\\s*\\d+)\\b", "i")
+    ],
+    pole_height_ft: [
+      new RegExp("pole\\s*height" + GAP + "(\\d+(?:\\.\\d+)?)\\s*" + FT, "i"),
+      new RegExp("height" + GAP + "(\\d+(?:\\.\\d+)?)\\s*" + FT, "i"),
+      new RegExp("(\\d+(?:\\.\\d+)?)\\s*" + FT + "[\\s-]*(?:tall|high)", "i"),
+      new RegExp("(\\d+(?:\\.\\d+)?)[\\s-]*" + FT + "[\\s-]*(?:class\\s*\\d+\\s*)?(?:wood\\s*)?pole", "i")
+    ],
+    nesc_grade: [
+      new RegExp("nesc\\s*grade\\s*[:=]?\\s*(?:grade\\s*)?([a-c])\\b", "i"),
+      new RegExp("grade\\s*[:=]?\\s*([a-c])\\s*(?:construction)?", "i"),
+      new RegExp("construction\\s*grade\\s*[:=]?\\s*([a-c])\\b", "i"),
+      new RegExp("grade[- ]([a-c])\\s*construction", "i")
+    ],
+    total_wind_load_lb: [
+      new RegExp("total\\s*wind\\s*load" + GAP + "([\\d,]+(?:\\.\\d+)?)\\s*" + LB, "i"),
+      new RegExp("(?:lateral\\s*)?wind\\s*(?:force|load)" + GAP + "([\\d,]+(?:\\.\\d+)?)\\s*" + LB, "i"),
+      new RegExp("([\\d,]+(?:\\.\\d+)?)\\s*" + LB + "\\s*(?:of\\s*)?(?:total\\s*)?(?:lateral\\s*)?wind\\s*(?:load|force)", "i")
+    ],
+    groundline_moment_ft_lb: [
+      new RegExp("groundline\\s*moment" + GAP + "([\\d,]+(?:\\.\\d+)?)\\s*" + FTLB, "i"),
+      new RegExp("(?:bending|overturning)?\\s*moment(?:\\s*at\\s*(?:the\\s*)?groundline)?" + GAP + "([\\d,]+(?:\\.\\d+)?)\\s*" + FTLB, "i"),
+      new RegExp("([\\d,]+(?:\\.\\d+)?)\\s*" + FTLB + "\\s*(?:of\\s*)?(?:groundline\\s*|bending\\s*|overturning\\s*)?moment", "i")
+    ],
+    pole_capacity_utilization_pct: [
+      new RegExp("(?:pole\\s*)?capacity\\s*util\\w*\\s*[:=]?\\s*([\\d.]+)\\s*%", "i"),
+      new RegExp("([\\d.]+)\\s*%\\s*(?:of\\s*)?(?:rated\\s*)?(?:pole\\s*)?capacity", "i"),
+      new RegExp("(?:loads?|loaded|utilized|stressed)(?:\\s*the\\s*pole)?" + GAP + "([\\d.]+)\\s*%", "i"),
+      new RegExp("([\\d.]+)\\s*%\\s*(?:utiliz\\w*|load\\w*)", "i")
+    ],
+    guy_wire_tension_lb: [
+      new RegExp("guy\\s*(?:wire\\s*)?tension" + GAP + "([\\d,]+(?:\\.\\d+)?)\\s*" + LB, "i"),
+      new RegExp("tension\\s*in\\s*(?:the\\s*)?guy\\s*(?:wire)?" + GAP + "([\\d,]+(?:\\.\\d+)?)\\s*" + LB, "i"),
+      new RegExp("guy\\s*(?:wire\\s*)?(?:load|force)" + GAP + "([\\d,]+(?:\\.\\d+)?)\\s*" + LB, "i")
+    ],
+    required_anchor_capacity_lb: [
+      new RegExp("required\\s*anchor\\s*capacity" + GAP + "([\\d,]+(?:\\.\\d+)?)\\s*" + LB, "i"),
+      new RegExp("anchor(?:\\s*capacity)?\\s*required" + GAP + "([\\d,]+(?:\\.\\d+)?)\\s*" + LB, "i"),
+      new RegExp("(?:requir\\w+|needs?)(?:\\s*an?)?\\s*anchor(?:\\s*rated)?" + GAP + "([\\d,]+(?:\\.\\d+)?)\\s*" + LB, "i")
+    ],
+    selected_anchor_capacity_lb: [
+      new RegExp("selected\\s*anchor\\s*capacity" + GAP + "([\\d,]+(?:\\.\\d+)?)\\s*" + LB, "i"),
+      new RegExp("anchor(?:\\s*capacity)?\\s*(?:used|selected|installed|chosen|specified)" + GAP + "([\\d,]+(?:\\.\\d+)?)\\s*" + LB, "i"),
+      new RegExp("(?:used|install\\w+|specifi\\w+)(?:\\s*and\\s*install\\w+)?\\s*an?" + GAP + "([\\d,]+(?:\\.\\d+)?)\\s*" + LB + "\\s*anchor", "i")
+    ],
+    final_ground_resistance_ohm: [
+      new RegExp("(?:final\\s*)?ground(?:ing)?\\s*resistance" + GAP + "([\\d.]+)\\s*" + OHM, "i"),
+      new RegExp("resistance\\s*to\\s*ground" + GAP + "([\\d.]+)\\s*" + OHM, "i"),
+      new RegExp("measured(?:\\s*ground(?:ing)?)?\\s*resistance" + GAP + "([\\d.]+)\\s*" + OHM, "i"),
+      new RegExp("([\\d.]+)\\s*" + OHM + "\\s*(?:to\\s*ground|ground(?:ing)?\\s*resistance)?", "i")
+    ]
+  };
+  var REQUIRED = ["pole_class","pole_height_ft","nesc_grade","total_wind_load_lb","groundline_moment_ft_lb","pole_capacity_utilization_pct"];
+
+  function extractInputs(rawText){
+    var found = {};
+    Object.keys(FIELD_PATTERNS).forEach(function(field){
+      var patterns = FIELD_PATTERNS[field];
+      for (var i=0;i<patterns.length;i++){
+        var m = rawText.match(patterns[i]);
+        if (m){ found[field] = m[1].trim(); break; }
+      }
+    });
+    var missing = REQUIRED.filter(function(f){ return !(f in found); });
+    if (missing.length){
+      throw new Error("Could not find these required fields in the pasted text: " + missing.join(", ") + ". Try labeled lines like 'Total Wind Load: 1091 lb'.");
+    }
+    function num(key){ return found[key] !== undefined ? parseFloat(found[key].replace(/,/g,"")) : null; }
+    return {
+      pole_class: found.pole_class.replace(/\s+/g," ").replace(/\b\w/g, function(c){return c.toUpperCase();}),
+      pole_height_ft: num("pole_height_ft"),
+      nesc_grade: found.nesc_grade.toUpperCase(),
+      total_wind_load_lb: num("total_wind_load_lb"),
+      groundline_moment_ft_lb: num("groundline_moment_ft_lb"),
+      pole_capacity_utilization_pct: num("pole_capacity_utilization_pct"),
+      guy_wire_tension_lb: num("guy_wire_tension_lb"),
+      required_anchor_capacity_lb: num("required_anchor_capacity_lb"),
+      selected_anchor_capacity_lb: num("selected_anchor_capacity_lb"),
+      final_ground_resistance_ohm: num("final_ground_resistance_ohm")
+    };
+  }
+
+  var MAX_GROUND_RESISTANCE_OHM = 25.0;
+  var MAX_POLE_CAPACITY_PCT = 100.0;
+
+  function runAllChecks(inputs){
+    var results = [];
+
+    // NESC-092
+    if (inputs.final_ground_resistance_ohm === null){
+      results.push({rule_id:"NESC-092", description:"Grounding system resistance must not exceed 25 Ω (NESC Rule 092).", passed:false, detail:"No final ground resistance value provided — cannot verify."});
+    } else {
+      var gPass = inputs.final_ground_resistance_ohm <= MAX_GROUND_RESISTANCE_OHM;
+      results.push({rule_id:"NESC-092", description:"Grounding system resistance must not exceed 25 Ω (NESC Rule 092).", passed:gPass, detail:"Final ground resistance = " + inputs.final_ground_resistance_ohm + " Ω (" + (gPass?"within":"exceeds") + " the 25 Ω limit)."});
+    }
+
+    // STRUCT-CAP
+    var cPass = inputs.pole_capacity_utilization_pct <= MAX_POLE_CAPACITY_PCT;
+    results.push({rule_id:"STRUCT-CAP", description:"Groundline moment must not exceed rated pole capacity (100%).", passed:cPass, detail:"Pole capacity utilization = " + inputs.pole_capacity_utilization_pct + "% (" + (cPass?"within":"exceeds") + " rated capacity)."});
+
+    // GUY-ANCHOR
+    if (inputs.required_anchor_capacity_lb === null || inputs.selected_anchor_capacity_lb === null){
+      results.push({rule_id:"GUY-ANCHOR", description:"Selected anchor capacity must meet or exceed the required anchor capacity (NESC Rule 261H).", passed:false, detail:"Missing anchor capacity values — cannot verify."});
+    } else {
+      var aPass = inputs.selected_anchor_capacity_lb >= inputs.required_anchor_capacity_lb;
+      results.push({rule_id:"GUY-ANCHOR", description:"Selected anchor capacity must meet or exceed the required anchor capacity (NESC Rule 261H).", passed:aPass, detail:"Required = " + inputs.required_anchor_capacity_lb + " lb, selected = " + inputs.selected_anchor_capacity_lb + " lb (" + (aPass?"meets":"does not meet") + " requirement)."});
+    }
+
+    return results;
+  }
+
+  var SAMPLE = "Pole Class: Class 5\nPole Height: 35 ft\nNESC Grade: C\nTotal Wind Load: 1091 lb\nGroundline Moment: 38588 ft-lb\nPole Capacity Utilization: 85.8%\nGuy Wire Tension: 1543 lb\nRequired Anchor Capacity: 3086 lb\nSelected Anchor Capacity: 4000 lb\nFinal Ground Resistance: 21 ohm";
+
+  var input = document.getElementById("tryit-input");
+  var output = document.getElementById("tryit-output");
+  var sampleBtn = document.getElementById("tryit-sample");
+  var checkBtn = document.getElementById("tryit-check");
+
+  if (sampleBtn){
+    sampleBtn.addEventListener("click", function(){ input.value = SAMPLE; });
+  }
+
+  if (checkBtn){
+    checkBtn.addEventListener("click", function(){
+      output.hidden = false;
+      try {
+        var inputs = extractInputs(input.value);
+        var results = runAllChecks(inputs);
+        var overallPass = results.every(function(r){ return r.passed; });
+        var html = '<div class="tr-summary ' + (overallPass?'pass':'fail') + '">' +
+          (overallPass ? '✓ All checks passed.' : '✗ ' + results.filter(function(r){return !r.passed;}).length + ' check(s) failed.') +
+          '</div>';
+        results.forEach(function(r){
+          html += '<div class="tr-check"><span class="tr-id">' + r.rule_id + '</span><span class="tr-detail">' + r.detail + '</span><span class="tr-status ' + (r.passed?'pass':'fail') + '">' + (r.passed?'PASS':'FAIL') + '</span></div>';
+        });
+        output.innerHTML = html;
+      } catch (err){
+        output.innerHTML = '<div class="tr-error">' + err.message + '</div>';
+      }
+    });
+  }
+})();
+</script>
+
+</body></html>
