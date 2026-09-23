@@ -421,7 +421,7 @@ Final Ground Resistance: ohm</textarea>
       <div class="proj">
         <span class="when">Sep 2026 — In progress</span>
         <h3>NESC Compliance &amp; Calculation Verification Agent</h3>
-        <p>Deterministic Python/Pydantic rule engine that checks distribution pole design calculations against NESC grounding, guying, and loading rules — validated against my own real pole design project as ground truth, with automated pytest regression tests, all passing. Includes a free, regex-based extraction layer that turns a plain-text calc summary — labeled or full-sentence — into structured input with no API key required.</p>
+        <p>Deterministic Python/Pydantic rule engine that checks distribution pole design calculations against NESC grounding, guying, and loading rules — validated against my own real pole design project as ground truth, with automated pytest regression tests, all passing. Includes a free, regex-based extraction layer that turns a plain-text calc summary — labeled or full-sentence — into structured input with no API key required. It also now includes a conversational agent mode (agent.py) where an LLM calls the same rule checks as tools instead of guessing at pass or fail.</p>
         <span class="tag built">Tested &amp; passing</span>
         <a class="proj-link" href="https://github.com/omar-alsamman/nesc-compliance-agent" target="_blank" rel="noopener">GitHub ↗</a>
       </div>
