@@ -1,0 +1,30 @@
+# Illustrative workflow pattern
+# Synthetic example only. It is not connected to any account or API.
+version: 1
+workflow: weekly_application_discovery
+owner: career_income
+schedule: "weekly; operator-specific day configured by owner"
+canonical_state:
+  tracker: "career_tasks"
+  source_of_truth: "connected career tracker"
+  resume: "owner-designated canonical document"
+steps:
+  - retrieve_current_resume
+  - search_eligible_roles
+  - verify_source_and_current_status
+  - deduplicate:
+      against: [career_tracker, prior_run_checkpoint]
+  - stage_qualified_results:
+      status: "not_started"
+      require_source_link: true
+approval:
+  submit_application: human_required
+  contact_employer: human_required
+verification:
+  read_back_each_created_record: true
+  record_run_checkpoint: true
+failure_policy:
+  blocked_source: record_blocker_and_continue_independent_sources
+  uncertain_duplicate: skip_and_flag_for_review
+  external_side_effect: pause_for_owner_approval
+
