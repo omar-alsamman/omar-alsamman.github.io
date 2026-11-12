@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chatbot Demo</title>
+<!--
+  ============================================================================
+  DEMO CHATBOT TEMPLATE - AI Automation Agency
+  ============================================================================
+  To customize for a new prospect:
+    1. Edit ONLY the CONFIG object in the script block right below.
+    2. Save the file as <business-slug>-demo.html
+    3. Send / host that one file. No build step, no backend, no dependencies.
+
+  DEMO MODE: leads are stored in the visitor's browser localStorage only.
+  Nothing is emailed or sent anywhere. See README.md for the live routes.
+  ============================================================================
+-->
+<script>
+/* ============================ CONFIG - EDIT THIS ============================ */
+const CONFIG = {
+  businessName: "Arabella Property Management",
+  shortName: "Arabella",
+  tagline: "50+ years of combined experience. A military-family specialty, from Joint Base San Antonio to every corner of the city.",
+  logoEmoji: "🔑",
+  logoUrl: "",
+  primaryColor: "#7C2D12",
+  accentColor: "#F59E0B",
+  phone: "(210) 787-2350",
+  email: "info@arabellapm.com",
+  website: "https://arabellapm.com/",
+  address: "2719 N Loop 1604 W, San Antonio, TX 78258",
+  serviceArea: "San Antonio, Bulverde, Schertz, Helotes, Castroville, Timberwood Park, Spring Branch, Stone Oak, Cibolo, Converse, Boerne, New Braunfels, St. Hedwig, Selma, Alamo Heights, Terrell Hills, Lytle, Devine, Floresville, La Vernia and the Greater San Antonio Area",
+  hours: [{ days: "Hours", time: "Hours not published on site" }],
+  emergencyNote: "",
+  bookingUrl: "",
+  bookingLabel: "Book / Request callback",
+  services: [
+    { name: "Tenant Screening", price: "", blurb: "Tenant screening to find qualified tenants for your rental.", keywords: ["tenant screening", "screening", "background check", "screen tenants", "credit check"] },
+    { name: "Finding Qualified Tenants / Leasing", price: "", blurb: "Finding qualified tenants and leasing your property, start to finish.", keywords: ["leasing", "find tenants", "qualified tenants", "lease my home", "rent my home"] },
+    { name: "Lease Management", price: "", blurb: "Lease management for the full life of the tenancy.", keywords: ["lease", "lease management", "lease agreement", "renewal"] },
+    { name: "Maintenance Coordination", price: "", blurb: "Maintenance coordination handled for owners and tenants.", keywords: ["maintenance", "repairs", "fix", "maintenance coordination"] },
+    { name: "Rent Collection", price: "", blurb: "Rent collection handled for you.", keywords: ["rent collection", "collect rent", "rent payment", "pay rent"] },
+    { name: "Financial Reporting", price: "", blurb: "Financial reporting for owners on their rental portfolio.", keywords: ["financial reporting", "owner statements", "statements", "reporting"] },
+    { name: "Market Analysis", price: "", blurb: "Market analysis to price your rental right for the San Antonio market.", keywords: ["market analysis", "rental value", "rent estimate", "how much rent"] },
+    { name: "Portfolio Management", price: "", blurb: "Portfolio management and day-to-day operations for owners with multiple properties.", keywords: ["portfolio", "portfolio management", "multiple properties", "day-to-day"] }
+  ],
+  faqs: [
+    { keywords: ["military", "joint base", "lackland", "randolph", "brooke"], answer: "Yes - military families are a stated specialty. Joint Base San Antonio, Brooke Army Medical Center, Lackland AFB and Randolph AFB are a constant rental demand base for the firm." },
+    { keywords: ["experience", "how long", "who", "founder", "daniel wright"], answer: "Over 50 years of combined real-estate experience. Founder Daniel Wright bought and renovated his first rentals in 1991 and has been in brokerage, appraisal and consulting since 1995. Kristyna Umbaugh is Director and Lead Realtor; Rodalia Northrup is Operations Manager." },
+    { keywords: ["area", "where", "serve", "boerne", "new braunfels"], answer: "San Antonio and the Greater San Antonio Area - Bulverde, Schertz, Helotes, Castroville, Timberwood Park, Spring Branch, Stone Oak, Cibolo, Converse, Boerne, New Braunfels, St. Hedwig, Selma, Alamo Heights, Terrell Hills, Lytle, Devine, Floresville and La Vernia. The office is at 2719 N Loop 1604 W, San Antonio, TX 78258." },
+    { keywords: ["free consultation", "consultation"], answer: "Yes - a free property consultation form is offered on the San Antonio property-management page." },
+    { keywords: ["cost", "fee", "price", "rate"], answer: "No fee schedule is published on the site - ask for pricing when you call (210) 787-2350 or email info@arabellapm.com." },
+    { keywords: ["tenant screening", "qualified", "screening"], answer: "Yes - tenant screening is a named service, part of finding qualified tenants and leasing your property." },
+    { keywords: ["hours", "open", "contact", "phone"], answer: "Hours are not published on the site - call (210) 787-2350 or email info@arabellapm.com." }
+  ],
+  greeting: "Hi there! Thanks for visiting {business}. I can help with leasing, tenant screening, rent collection or a free property consultation - with a specialty in military families. What do you need?",
+  fallbackMessage: "I don't have that detail handy, but I can take your name and number and have the team call you back. What's the best number to reach you?",
+  leadStorageKey: "demoLeads"
+};
+/* ========================== END CONFIG - EDIT ABOVE ========================= */
+</script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #1c2733; background: #f4f6f8; }
+
+  /* ---- Mock business page (so the demo looks like the prospect's real site) ---- */
+  .site-header { background: var(--brand, #0b6bcb); color: #fff; padding: 14px 22px; display: flex; align-items: center; gap: 12px; }
+  .site-header .logo { font-size: 28px; }
+  .site-header h1 { font-size: 20px; }
+  .site-header .tag { font-size: 13px; opacity: .9; }
+  .site-header .call { margin-left: auto; background: rgba(255,255,255,.16); padding: 8px 14px; border-radius: 20px; font-weight: 600; font-size: 14px; white-space: nowrap; }
+  .hero { padding: 44px 22px 30px; max-width: 860px; margin: 0 auto; }
+  .hero h2 { font-size: 30px; margin-bottom: 10px; }
+  .hero p { color: #4a5a6a; line-height: 1.55; max-width: 620px; }
+  .hero .cta { display: inline-block; margin-top: 18px; background: var(--brand, #0b6bcb); color: #fff; padding: 12px 22px; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; font-size: 15px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; max-width: 860px; margin: 6px auto 60px; padding: 0 22px; }
+  .card { background: #fff; border: 1px solid #e2e8ee; border-radius: 10px; padding: 16px; }
+  .card h3 { font-size: 16px; margin-bottom: 6px; }
+  .card .price { color: var(--brand, #0b6bcb); font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+  .card p { font-size: 14px; color: #4a5a6a; line-height: 1.5; }
+  .demo-banner { background: #fff7e0; border-bottom: 1px solid #f0dfa0; color: #6b5510; font-size: 13px; text-align: center; padding: 7px 12px; }
+
+  /* ---- Chat widget ---- */
+  #chat-bubble { position: fixed; right: 22px; bottom: 22px; width: 60px; height: 60px; border-radius: 50%; background: var(--brand, #0b6bcb); color: #fff; border: none; font-size: 27px; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,.28); z-index: 9999; display: flex; align-items: center; justify-content: center; }
+  #chat-bubble:hover { filter: brightness(1.08); }
+  #chat-badge { position: absolute; top: -3px; right: -3px; background: #e63946; color: #fff; font-size: 12px; font-weight: 700; width: 21px; height: 21px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(11,107,203,.45); } 70% { box-shadow: 0 0 0 14px rgba(11,107,203,0); } 100% { box-shadow: 0 0 0 0 rgba(11,107,203,0); } }
+  #chat-bubble.attention { animation: pulse 2s infinite; }
+
+  #chat-window { position: fixed; right: 22px; bottom: 94px; width: 370px; max-width: calc(100vw - 24px); height: 540px; max-height: calc(100vh - 120px); background: #fff; border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,.30); display: none; flex-direction: column; overflow: hidden; z-index: 9999; }
+  #chat-window.open { display: flex; }
+  .chat-header { background: var(--brand, #0b6bcb); color: #fff; padding: 13px 15px; display: flex; align-items: center; gap: 10px; }
+  .chat-header .avatar { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,.22); display: flex; align-items: center; justify-content: center; font-size: 19px; overflow: hidden; flex: none; }
+  .chat-header .avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .chat-header h3 { font-size: 15px; line-height: 1.25; }
+  .chat-header .status { font-size: 12px; opacity: .92; }
+  .chat-header .status::before { content: "● "; color: #7bf1a8; }
+  .chat-header button { margin-left: auto; background: none; border: none; color: #fff; font-size: 19px; cursor: pointer; padding: 4px 6px; }
+  .chat-header .hdr-btns { margin-left: auto; display: flex; }
+  #chat-messages { flex: 1; overflow-y: auto; padding: 14px 12px; background: #f7f9fb; display: flex; flex-direction: column; gap: 9px; }
+  .msg { max-width: 82%; padding: 10px 13px; border-radius: 14px; font-size: 14px; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word; }
+  .msg.bot { background: #fff; border: 1px solid #e2e8ee; border-bottom-left-radius: 4px; align-self: flex-start; }
+  .msg.user { background: var(--brand, #0b6bcb); color: #fff; border-bottom-right-radius: 4px; align-self: flex-end; }
+  .msg.system { background: #e8f7ee; border: 1px solid #bfe6cd; align-self: stretch; max-width: 100%; font-size: 13.5px; }
+  .msg a { color: var(--brand, #0b6bcb); font-weight: 600; }
+  .typing { align-self: flex-start; background: #fff; border: 1px solid #e2e8ee; border-radius: 14px; padding: 11px 15px; font-size: 15px; color: #7a8a99; letter-spacing: 2px; }
+  #chat-chips { display: flex; gap: 7px; flex-wrap: wrap; padding: 9px 12px 2px; background: #f7f9fb; }
+  .chip { border: 1.5px solid var(--brand, #0b6bcb); color: var(--brand, #0b6bcb); background: #fff; border-radius: 18px; padding: 6px 13px; font-size: 13px; font-weight: 600; cursor: pointer; }
+  .chip:hover { background: var(--brand, #0b6bcb); color: #fff; }
+  #lead-form { display: none; background: #fff; border-top: 1px solid #e2e8ee; padding: 13px 14px; }
+  #lead-form h4 { font-size: 14px; margin-bottom: 9px; }
+  #lead-form label { display: block; font-size: 12.5px; font-weight: 600; color: #4a5a6a; margin: 8px 0 3px; }
+  #lead-form input, #lead-form select, #lead-form textarea { width: 100%; border: 1px solid #c9d4de; border-radius: 7px; padding: 8px 10px; font-size: 14px; font-family: inherit; }
+  #lead-form .err { color: #c1121f; font-size: 12.5px; min-height: 16px; margin-top: 5px; }
+  #lead-form .submit { width: 100%; margin-top: 9px; background: var(--brand, #0b6bcb); color: #fff; border: none; border-radius: 8px; padding: 10px; font-size: 14.5px; font-weight: 700; cursor: pointer; }
+  #lead-form .cancel { width: 100%; margin-top: 6px; background: none; border: none; color: #7a8a99; font-size: 13px; cursor: pointer; }
+  #chat-input-row { display: flex; gap: 8px; padding: 11px 12px; border-top: 1px solid #e2e8ee; background: #fff; }
+  #chat-input { flex: 1; border: 1px solid #c9d4de; border-radius: 20px; padding: 9px 14px; font-size: 14px; font-family: inherit; outline: none; }
+  #chat-input:focus { border-color: var(--brand, #0b6bcb); }
+  #chat-send { background: var(--brand, #0b6bcb); color: #fff; border: none; border-radius: 50%; width: 38px; height: 38px; font-size: 16px; cursor: pointer; flex: none; }
+  .powered { text-align: center; font-size: 11px; color: #93a3b1; padding: 5px; background: #fff; border-top: 1px solid #eef2f5; }
+  #leads-panel { display: none; background: #fffbe8; border-top: 1px solid #f0dfa0; padding: 10px 14px; font-size: 12.5px; max-height: 150px; overflow-y: auto; }
+  #leads-panel h5 { font-size: 12.5px; margin-bottom: 5px; }
+  #leads-panel .lead { border-bottom: 1px dashed #e3d491; padding: 5px 0; }
+  #leads-panel button { margin-top: 7px; font-size: 12px; cursor: pointer; }
+  @media (max-width: 480px) { #chat-window { right: 12px; bottom: 90px; } #chat-bubble { right: 16px; bottom: 16px; } }
+</style>
+</head>
+<body>
+
+<div class="demo-banner">DEMO PAGE - this is a preview of how the chat assistant would look and answer on this business's own website.</div>
+
+<header class="site-header">
+  <div class="logo" id="hdr-emoji">❄️</div>
+  <div>
+    <h1 id="hdr-name">Business Name</h1>
+    <div class="tag" id="hdr-tag"></div>
+  </div>
+  <div class="call" id="hdr-phone"></div>
+</header>
+
+<section class="hero">
+  <h2 id="hero-title"></h2>
+  <p id="hero-text"></p>
+  <button class="cta" onclick="openChat()">Chat with us - replies instantly</button>
+</section>
+
+<div class="cards" id="service-cards"></div>
+
+<button id="chat-bubble" class="attention" onclick="toggleChat()" aria-label="Open chat">💬<span id="chat-badge">1</span></button>
+
+<div id="chat-window" role="dialog" aria-label="Chat window">
+  <div class="chat-header">
+    <div class="avatar" id="chat-avatar">❄️</div>
+    <div>
+      <h3 id="chat-biz-name"></h3>
+      <div class="status">Online - typically replies instantly</div>
+    </div>
+    <div class="hdr-btns">
+      <button onclick="toggleLeadsPanel()" title="Demo leads stored in this browser">📋</button>
+      <button onclick="toggleChat()" title="Close chat">✕</button>
+    </div>
+  </div>
+
+  <div id="chat-messages"></div>
+  <div id="chat-chips"></div>
+
+  <form id="lead-form" onsubmit="return submitLead(event)">
+    <h4 id="lead-form-title">Request a callback</h4>
+    <label for="lead-name">Your name *</label>
+    <input id="lead-name" type="text" autocomplete="name" placeholder="Jane Smith">
+    <label for="lead-phone">Phone number *</label>
+    <input id="lead-phone" type="tel" autocomplete="tel" placeholder="(210) 555-0100">
+    <label for="lead-service">What do you need?</label>
+    <select id="lead-service"></select>
+    <label for="lead-notes">Anything else? (optional)</label>
+    <textarea id="lead-notes" rows="2" placeholder="e.g. AC stopped working this morning, house is getting hot"></textarea>
+    <div class="err" id="lead-err"></div>
+    <button class="submit" type="submit">Send - request my callback</button>
+    <button class="cancel" type="button" onclick="hideLeadForm()">Cancel</button>
+  </form>
+
+  <div id="leads-panel"></div>
+
+  <div id="chat-input-row">
+    <input id="chat-input" type="text" placeholder="Type your question..." onkeydown="if(event.key==='Enter')sendUserMessage()">
+    <button id="chat-send" onclick="sendUserMessage()" aria-label="Send">➤</button>
+  </div>
+  <div class="powered">Demo assistant - answers from this business's published info</div>
+</div>
+
+<script>
+/* ============================ ENGINE - DO NOT EDIT =========================== */
+(function () {
+  var C = CONFIG;
+  document.documentElement.style.setProperty("--brand", C.primaryColor || "#0b6bcb");
+  document.title = C.businessName + " - Chat Demo";
+
+  // --- Paint the mock site from CONFIG ---
+  document.getElementById("hdr-name").textContent = C.businessName;
+  document.getElementById("hdr-tag").textContent = C.tagline || "";
+  document.getElementById("hdr-phone").textContent = "📞 " + C.phone;
+  if (C.logoUrl) {
+    document.getElementById("hdr-emoji").innerHTML = '<img src="' + C.logoUrl + '" alt="" style="width:38px;height:38px;border-radius:8px;object-fit:cover">';
+    document.getElementById("chat-avatar").innerHTML = '<img src="' + C.logoUrl + '" alt="">';
+  } else {
+    document.getElementById("hdr-emoji").textContent = C.logoEmoji || "💬";
+    document.getElementById("chat-avatar").textContent = C.logoEmoji || "💬";
+  }
+  document.getElementById("hero-title").textContent = "Welcome to " + C.businessName;
+  document.getElementById("hero-text").textContent =
+    "Serving " + C.serviceArea + ". " + (C.emergencyNote || "") +
+    " Use the chat in the corner to get instant answers, check pricing, or request a callback - exactly like a visitor on the real site would.";
+  document.getElementById("chat-biz-name").textContent = C.businessName;
+  document.getElementById("lead-form-title").textContent = C.bookingLabel || "Request a callback";
+
+  var cards = document.getElementById("service-cards");
+  C.services.forEach(function (s) {
+    var d = document.createElement("div");
+    d.className = "card";
+    d.innerHTML = "<h3></h3><div class='price'></div><p></p>";
+    d.querySelector("h3").textContent = s.name;
+    d.querySelector(".price").textContent = s.price || "";
+    d.querySelector("p").textContent = s.blurb || "";
+    cards.appendChild(d);
+  });
+
+  var sel = document.getElementById("lead-service");
+  C.services.forEach(function (s) {
+    var o = document.createElement("option");
+    o.value = s.name; o.textContent = s.name;
+    sel.appendChild(o);
+  });
+  var other = document.createElement("option");
+  other.value = "Something else"; other.textContent = "Something else";
+  sel.appendChild(other);
+
+  // --- Chips ---
+  var chips = document.getElementById("chat-chips");
+  ["Services", "Hours", C.bookingLabel || "Book / Request callback", "Pricing"].forEach(function (label) {
+    var b = document.createElement("button");
+    b.className = "chip"; b.type = "button"; b.textContent = label;
+    b.onclick = function () { handleChip(label); };
+    chips.appendChild(b);
+  });
+
+  var greeted = false;
+  var fallbackCount = 0;
+
+  window.toggleChat = function () {
+    var w = document.getElementById("chat-window");
+    var open = w.classList.toggle("open");
+    if (open) {
+      document.getElementById("chat-badge").style.display = "none";
+      document.getElementById("chat-bubble").classList.remove("attention");
+      if (!greeted) {
+        greeted = true;
+        botSay(C.greeting.replace("{business}", C.shortName || C.businessName));
+      }
+      document.getElementById("chat-input").focus();
+    }
+  };
+  window.openChat = function () {
+    if (!document.getElementById("chat-window").classList.contains("open")) window.toggleChat();
+  };
+
+  function scrollDown() {
+    var m = document.getElementById("chat-messages");
+    m.scrollTop = m.scrollHeight;
+  }
+  function addMsg(text, who) {
+    var m = document.getElementById("chat-messages");
+    var d = document.createElement("div");
+    d.className = "msg " + who;
+    d.textContent = text;
+    m.appendChild(d);
+    scrollDown();
+    return d;
+  }
+  function botSay(text) {
+    var m = document.getElementById("chat-messages");
+    var t = document.createElement("div");
+    t.className = "typing"; t.textContent = "•••";
+    m.appendChild(t); scrollDown();
+    setTimeout(function () {
+      t.remove();
+      addMsg(text, "bot");
+    }, 450 + Math.min(text.length * 4, 700));
+  }
+
+  function norm(s) { return " " + String(s || "").toLowerCase().replace(/[^a-z0-9\s/]/g, " ").replace(/\s+/g, " ") + " "; }
+  function hits(text, keywords) {
+    var n = norm(text), count = 0;
+    (keywords || []).forEach(function (k) { if (n.indexOf(" " + String(k).toLowerCase().trim()) !== -1 || n.indexOf(String(k).toLowerCase()) !== -1) count++; });
+    return count;
+  }
+
+  function servicesText() {
+    return "Here is what we offer:\n" + C.services.map(function (s) { return "• " + s.name + (s.price ? " - " + s.price : ""); }).join("\n") + "\n\nWant details on any of these, or shall I take your number for a callback?";
+  }
+  function pricingText() {
+    var priced = C.services.filter(function (s) { return s.price; });
+    if (!priced.length) return "Pricing depends on the job, so we quote after a quick look - estimates for new work are free. Want me to take your number so the team can quote you?";
+    return "Here is our published pricing:\n" + priced.map(function (s) { return "• " + s.name + ": " + s.price; }).join("\n") + "\n\nFinal quotes are confirmed by the team before any work starts.";
+  }
+  function hoursText() {
+    return "Our hours:\n" + C.hours.map(function (h) { return "• " + h.days + ": " + h.time; }).join("\n") + (C.emergencyNote ? "\n" + C.emergencyNote : "") + "\nYou can reach us at " + C.phone + ".";
+  }
+  function contactText() {
+    return "You can reach " + C.businessName + " at " + C.phone + (C.email ? " or " + C.email : "") + ".\nWe are at " + C.address + " and serve " + C.serviceArea + ".";
+  }
+  function areaText() {
+    return "We serve " + C.serviceArea + ". Not sure if you are in range? Give us a call at " + C.phone + " and we will confirm right away.";
+  }
+
+  function answerFor(text) {
+    var n = norm(text);
+    // Hard intents first
+    if (hits(text, ["hour", "open", "close", "when are you"]) > 0) return hoursText();
+    if (hits(text, ["price", "pricing", "cost", "how much", "charge", "rate"]) > 0) {
+      // A priced service may be a better answer, e.g. "how much is a tune-up"
+      var bestSvc = bestService(text);
+      if (bestSvc && bestSvc.price) return bestSvc.name + " is " + bestSvc.price + ". " + (bestSvc.blurb || "") + "\n\nWant me to book you in or take a number for a callback?";
+      return pricingText();
+    }
+    if (hits(text, ["book", "appointment", "schedule", "callback", "call back", "come out", "visit"]) > 0) { showLeadForm(); return "Happy to set that up. I have opened a short form below - name, number and what you need - and the team will confirm your time."; }
+    if (hits(text, ["area", "serve", "service area", "do you come to", "near me", "location", "address", "where are you"]) > 0) return areaText();
+    if (hits(text, ["phone", "call you", "number", "email", "contact"]) > 0) return contactText();
+    if (hits(text, ["service", "offer", "do you do", "what do you do", "help with"]) > 0) {
+      var svc0 = bestService(text);
+      if (!svc0) return servicesText();
+    }
+    if (hits(text, ["hello", "hi there", "hey"]) > 0 && text.trim().length < 20) return "Hello! Ask me about our services, hours or pricing - or tap '" + (C.bookingLabel || "Book / Request callback") + "' and I will take your details for a callback.";
+    if (hits(text, ["thank", "thanks", "great", "perfect"]) > 0) return "You are welcome! Anything else I can help with - services, hours, pricing, or a callback?";
+
+    var svc = bestService(text);
+    if (svc) return svc.name + (svc.price ? " - " + svc.price : "") + ". " + (svc.blurb || "") + "\n\nWant me to take your number so the team can follow up?";
+
+    // FAQ matching - best score wins
+    var bestFaq = null, bestScore = 0;
+    C.faqs.forEach(function (f) { var s = hits(text, f.keywords); if (s > bestScore) { bestScore = s; bestFaq = f; } });
+    if (bestFaq) return bestFaq.answer;
+
+    return null; // fallback
+  }
+  function bestService(text) {
+    var best = null, score = 0;
+    C.services.forEach(function (s) {
+      var sc = hits(text, (s.keywords || []).concat([s.name.toLowerCase()]));
+      if (sc > score) { score = sc; best = s; }
+    });
+    return score > 0 ? best : null;
+  }
+
+  function handleChip(label) {
+    addMsg(label, "user");
+    if (label === "Services") botSay(servicesText());
+    else if (label === "Hours") botSay(hoursText());
+    else if (label === "Pricing") botSay(pricingText());
+    else { // Book / Request callback
+      if (C.bookingUrl) {
+        botSay("You can book online here: " + C.bookingUrl + " - or leave your number in the form below and we will call to confirm.");
+        window.open(C.bookingUrl, "_blank");
+      } else {
+        botSay("Happy to set that up. I have opened a short form below - name, number and what you need - and the team will confirm your time.");
+      }
+      showLeadForm();
+    }
+  }
+
+  window.sendUserMessage = function () {
+    var input = document.getElementById("chat-input");
+    var text = input.value.trim();
+    if (!text) return;
+    input.value = "";
+    addMsg(text, "user");
+    var ans = answerFor(text);
+    if (ans) { fallbackCount = 0; botSay(ans); }
+    else {
+      fallbackCount++;
+      botSay(C.fallbackMessage);
+      if (fallbackCount >= 1) setTimeout(showLeadForm, 1300);
+    }
+  };
+
+  function showLeadForm() { document.getElementById("lead-form").style.display = "block"; scrollDown(); }
+  window.hideLeadForm = function () { document.getElementById("lead-form").style.display = "none"; };
+  function storageKey() { return (C.leadStorageKey || "demoLeads") + ":" + (C.shortName || C.businessName); }
+  function getLeads() {
+    try { return JSON.parse(localStorage.getItem(storageKey()) || "[]"); } catch (e) { return []; }
+  }
+
+  window.submitLead = function (ev) {
+    ev.preventDefault();
+    var name = document.getElementById("lead-name").value.trim();
+    var phone = document.getElementById("lead-phone").value.trim();
+    var service = document.getElementById("lead-service").value;
+    var notes = document.getElementById("lead-notes").value.trim();
+    var err = document.getElementById("lead-err");
+    var digits = phone.replace(/\D/g, "");
+    if (!name) { err.textContent = "Please add your name."; return false; }
+    if (digits.length < 7) { err.textContent = "Please add a valid phone number so we can call you back."; return false; }
+    err.textContent = "";
+    var lead = { name: name, phone: phone, service: service, notes: notes, at: new Date().toISOString(), source: "chat-demo" };
+    var leads = getLeads();
+    leads.push(lead);
+    try { localStorage.setItem(storageKey(), JSON.stringify(leads)); } catch (e) { /* storage unavailable - demo still shows confirmation */ }
+    window.hideLeadForm();
+    var confirm = document.createElement("div");
+    confirm.className = "msg system";
+    confirm.textContent = "✅ Lead captured (demo)\nThanks " + name.split(" ")[0] + " - we have your request for " + service + " and will call " + phone + " back during business hours.\n\nDemo note: in this preview the lead is saved only in this browser (localStorage, key '" + storageKey() + "'). On the live version it is emailed / sent to the business's CRM instantly.";
+    document.getElementById("chat-messages").appendChild(confirm);
+    scrollDown();
+    botSay("Anything else I can help with in the meantime - hours, pricing, or another service?");
+    renderLeadsPanel();
+    return false;
+  };
+
+  function renderLeadsPanel() {
+    var p = document.getElementById("leads-panel");
+    var leads = getLeads();
+    var html = "<h5>Demo leads stored in this browser (" + leads.length + ")</h5>";
+    if (!leads.length) html += "<div>No leads yet. Submit the callback form to test it.</div>";
+    leads.forEach(function (l) {
+      var d = document.createElement("div");
+      d.className = "lead";
+      d.textContent = l.name + " - " + l.phone + " - " + l.service + (l.notes ? " - " + l.notes : "") + " (" + l.at + ")";
+      var wrap = document.createElement("div");
+      wrap.innerHTML = html; html = "";
+      wrap.appendChild(d);
+      p.appendChild(wrap);
+    });
+    if (leads.length) {
+      var b = document.createElement("button");
+      b.type = "button"; b.textContent = "Clear demo leads";
+      b.onclick = function () { localStorage.removeItem(storageKey()); renderLeadsPanel(); };
+      p.appendChild(b);
+    }
+    if (!leads.length) p.innerHTML = html;
+  }
+  window.toggleLeadsPanel = function () {
+    var p = document.getElementById("leads-panel");
+    var show = p.style.display !== "block";
+    p.style.display = show ? "block" : "none";
+    if (show) { p.innerHTML = ""; renderLeadsPanel(); }
+  };
+  renderLeadsPanel();
+})();
+/* ========================== END ENGINE ======================================= */
+</script>
+</body>
+</html>
