@@ -91,6 +91,17 @@ const CONFIG = {
   .ionix-footer { background: #0f2a43; color: #fff; text-align: center; padding: 16px; font-size: 13px; line-height: 1.6; }
   .ionix-footer a { color: #9fd0ff; font-weight: 700; }
 
+  /* ---- Visit / hours / contact ---- */
+  .visit { max-width: 1100px; margin: 26px auto 10px; padding: 0 16px; }
+  .visit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .visit-box { background: #fff; border: 1px solid #e2e8ee; border-radius: 12px; padding: 16px 18px; }
+  .visit-box h3 { font-size: 15px; margin-bottom: 8px; color: #16303f; }
+  .visit-box p, .visit-box li { font-size: 14px; line-height: 1.55; color: #40536a; }
+  .visit-box ul { list-style: none; }
+  .visit-box a { color: var(--brand, #0b6bcb); font-weight: 600; text-decoration: none; }
+  .visit-box a:hover { text-decoration: underline; }
+  .visit-dir { display: inline-block; margin-top: 8px; }
+
   /* ---- Chat widget ---- */
   #chat-bubble { position: fixed; right: 22px; bottom: 22px; width: 60px; height: 60px; border-radius: 50%; background: var(--brand, #0b6bcb); color: #fff; border: none; font-size: 27px; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,.28); z-index: 9999; display: flex; align-items: center; justify-content: center; }
   #chat-bubble:hover { filter: brightness(1.08); }
@@ -158,6 +169,24 @@ const CONFIG = {
 
 <div class="cards" id="service-cards"></div>
 
+<section class="visit" id="visit-section">
+  <div class="visit-grid">
+    <div class="visit-box">
+      <h3>📍 Visit us</h3>
+      <p id="visit-address"></p>
+      <a class="visit-dir" id="visit-directions" href="#" target="_blank" rel="noopener">Get directions →</a>
+    </div>
+    <div class="visit-box">
+      <h3>🕐 Hours</h3>
+      <ul id="visit-hours"></ul>
+    </div>
+    <div class="visit-box">
+      <h3>📞 Contact</h3>
+      <p id="visit-contact"></p>
+    </div>
+  </div>
+</section>
+
 <button id="chat-bubble" class="attention" onclick="toggleChat()" aria-label="Open chat">💬<span id="chat-badge">1</span></button>
 
 <div id="chat-window" role="dialog" aria-label="Chat window">
@@ -210,7 +239,7 @@ const CONFIG = {
   // --- Paint the mock site from CONFIG ---
   document.getElementById("hdr-name").textContent = C.businessName;
   document.getElementById("hdr-tag").textContent = C.tagline || "";
-  document.getElementById("hdr-phone").textContent = "📞 " + C.phone;
+  document.getElementById("hdr-phone").innerHTML = '<a href="tel:' + (C.phone || "").replace(/[^0-9+]/g, "") + '" style="color:inherit;text-decoration:none">📞 ' + C.phone + "</a>";
   if (C.logoUrl) {
     document.getElementById("hdr-emoji").innerHTML = '<img src="' + C.logoUrl + '" alt="" style="width:38px;height:38px;border-radius:8px;object-fit:cover">';
     document.getElementById("chat-avatar").innerHTML = '<img src="' + C.logoUrl + '" alt="">';
@@ -245,6 +274,37 @@ const CONFIG = {
   var other = document.createElement("option");
   other.value = "Something else"; other.textContent = "Something else";
   sel.appendChild(other);
+
+  // --- Visit / hours / contact (visible info section) ---
+  (function () {
+    var addr = document.getElementById("visit-address");
+    if (addr && C.address) {
+      addr.textContent = C.address;
+      var dir = document.getElementById("visit-directions");
+      if (dir) dir.href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(C.businessName + ", " + C.address);
+    }
+    var hrs = document.getElementById("visit-hours");
+    if (hrs && C.hours) {
+      C.hours.forEach(function (h) {
+        var li = document.createElement("li");
+        li.textContent = h.days + ": " + h.time;
+        hrs.appendChild(li);
+      });
+      if (C.emergencyNote) {
+        var li2 = document.createElement("li");
+        li2.textContent = C.emergencyNote;
+        hrs.appendChild(li2);
+      }
+    }
+    var con = document.getElementById("visit-contact");
+    if (con) {
+      var parts = [];
+      if (C.phone) parts.push("Call or text: " + C.phone);
+      if (C.email) parts.push("Email: " + C.email);
+      if (C.website) parts.push("Web: " + C.website.replace(/^https?:\/\//, "").replace(/\/$/, ""));
+      con.innerHTML = parts.join("<br>");
+    }
+  })();
 
   // --- Chips ---
   var chips = document.getElementById("chat-chips");
